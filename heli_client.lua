@@ -44,9 +44,9 @@ local vision_state = 0 -- 0 is normal, 1 is nightmode, 2 is thermal vision
 
 local cameraInUse = {} -- DO NOT TOUCH!
 
-Citizen.CreateThread(function() -- Register ped decorators used to pass some variables from heli pilot to other players (variable settings: 1=false, 2=true)
+CreateThread(function() -- Register ped decorators used to pass some variables from heli pilot to other players (variable settings: 1=false, 2=true)
 	while true do
-	Citizen.Wait(0)
+	Wait(0)
 		if NetworkIsSessionStarted() then
 			DecorRegister("SpotvectorX", 3) -- For direction of manual spotlight
 			DecorRegister("SpotvectorY", 3)
@@ -57,7 +57,7 @@ Citizen.CreateThread(function() -- Register ped decorators used to pass some var
 	end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		while disableControls do
 			DisableControlAction(0, 75, true)
@@ -73,9 +73,9 @@ Citizen.CreateThread(function()
 	end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-        Citizen.Wait(0)
+        Wait(0)
 		if IsPlayerInPolmav() then
 			local lPed = PlayerPedId()
 			local heli = GetVehiclePedIsIn(lPed)
@@ -108,7 +108,7 @@ Citizen.CreateThread(function()
 						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
 						SetPedCanRagdoll(lPed, false)
 						TaskRappelFromHeli(lPed, 1)
-						Citizen.CreateThread(function()
+						CreateThread(function()
 							Wait(15000)
 							SetPedCanRagdoll(lPed, true)
 						end)
@@ -191,7 +191,7 @@ Citizen.CreateThread(function()
 			SetTimecycleModifierStrength(0.3)
 			local scaleform = RequestScaleformMovie("HELI_CAM")
 			while not HasScaleformMovieLoaded(scaleform) do
-				Citizen.Wait(0)
+				Wait(0)
 			end
 			local lPed = PlayerPedId()
 			local heli = GetVehiclePedIsIn(lPed)
@@ -370,7 +370,7 @@ Citizen.CreateThread(function()
 				PushScaleformMovieFunctionParameterFloat(GetCamRot(cam, 2).z)
 				PopScaleformMovieFunctionVoid()
 				DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-				Citizen.Wait(0)
+				Wait(0)
 
 				if manual_spotlight then -- Continuously update manual spotlight direction, sync client-client with decorators
 					local rotation = GetCamRot(cam, 2)
@@ -410,7 +410,7 @@ end)
 RegisterNetEvent('heli:client:cameraupdate')
 AddEventHandler('heli:client:cameraupdate', function(vehicle, state)
 	cameraInUse[vehicle] = state
-	print(json.encode(cameraInUse))
+-- 	print(json.encode(cameraInUse))
 end)
 
 RegisterNetEvent('heli:forward.spotlight')
@@ -448,7 +448,7 @@ AddEventHandler('heli:Tspotlight', function(serverID, target_netID, target_plate
 	Tspotlight_pause = false
 	tracking_spotlight = true
 	while not IsEntityDead(heliPed) and (GetVehiclePedIsIn(heliPed) == heli) and Tspotlight_target and Tspotlight_toggle do
-		Citizen.Wait(1)
+		Wait(1)
 		local helicoords = GetEntityCoords(heli)
 		local targetcoords = GetEntityCoords(Tspotlight_target)
 		local spotVector = targetcoords - helicoords
@@ -494,7 +494,7 @@ AddEventHandler('heli:Mspotlight', function(serverID)
 		local heliPed = GetPlayerPed(GetPlayerFromServerId(serverID))
 		Mspotlight_toggle = true
 		while not IsEntityDead(heliPed) and (GetVehiclePedIsIn(heliPed) == heli) and Mspotlight_toggle do
-			Citizen.Wait(0) 
+			Wait(0) 
 			local helicoords = GetEntityCoords(heli)
 			spotoffset = helicoords + vector3(0.0, 0.0, -1.5)
 			SpotvectorX = DecorGetInt(heliPed, "SpotvectorX")
