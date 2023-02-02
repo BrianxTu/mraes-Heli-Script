@@ -1,5 +1,5 @@
 fx_version 'cerulean'
-games { 'gta5' }
+game 'gta5'
 
 author 'BrianTU#0001'
 description 'Heli Script'
