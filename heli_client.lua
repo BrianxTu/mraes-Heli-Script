@@ -99,6 +99,7 @@ Citizen.CreateThread(function()
 						AddTextComponentString("~r~Camera already in use")
 						DrawNotification(false, false )
 						PlaySoundFrontend(-1, "5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS", false) 
+						cameraInUse[NetworkGetNetworkIdFromEntity(GetVehiclePedIsIn(lPed))] = false -- false or nil either work not sure which is better
 					end
 				end
 				
